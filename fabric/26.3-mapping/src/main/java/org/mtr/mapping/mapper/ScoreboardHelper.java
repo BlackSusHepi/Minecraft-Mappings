@@ -14,7 +14,7 @@ public final class ScoreboardHelper extends DummyClass {
 	@Nullable
 	@MappedMethod
 	public static ScoreboardObjective getScoreboardObjective(Scoreboard scoreboard, String name) {
-		final net.minecraft.world.scores.Objective scoreboardObjective = scoreboard.data.getNullableObjective(name);
+		final net.minecraft.world.scores.Objective scoreboardObjective = scoreboard.data.getObjective(name);
 		return scoreboardObjective == null ? null : new ScoreboardObjective(scoreboardObjective);
 	}
 
@@ -25,20 +25,20 @@ public final class ScoreboardHelper extends DummyClass {
 
 	@MappedMethod
 	public static int getPlayerScore(Scoreboard scoreboard, String playerName, ScoreboardObjective scoreboardObjective) {
-		return getOrCreateScore(scoreboard, playerName, scoreboardObjective).getScore();
+		return getOrCreateScore(scoreboard, playerName, scoreboardObjective).get();
 	}
 
 	@MappedMethod
 	public static void setPlayerScore(Scoreboard scoreboard, String playerName, ScoreboardObjective scoreboardObjective, int amount) {
-		getOrCreateScore(scoreboard, playerName, scoreboardObjective).setScore(amount);
+		getOrCreateScore(scoreboard, playerName, scoreboardObjective).set(amount);
 	}
 
 	@MappedMethod
 	public static void incrementPlayerScore(Scoreboard scoreboard, String playerName, ScoreboardObjective scoreboardObjective, int amount) {
-		getOrCreateScore(scoreboard, playerName, scoreboardObjective).incrementScore(amount);
+		getOrCreateScore(scoreboard, playerName, scoreboardObjective).add(amount);
 	}
 
 	private static ScoreAccess getOrCreateScore(Scoreboard scoreboard, String playerName, ScoreboardObjective scoreboardObjective) {
-		return scoreboard.data.getOrCreateScore(ScoreHolder.fromName(playerName), scoreboardObjective.data);
+		return scoreboard.data.getOrCreatePlayerScore(ScoreHolder.forNameOnly(playerName), scoreboardObjective.data);
 	}
 }

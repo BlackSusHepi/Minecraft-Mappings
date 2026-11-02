@@ -14,25 +14,25 @@ public final class MinecraftClientHelper extends DummyClass {
 
 	@MappedMethod
 	public static int getRenderDistance() {
-		return Minecraft.getInstance().options.getViewDistance().getValue();
+		return Minecraft.getInstance().options.renderDistance().get();
 	}
 
 	@MappedMethod
 	public static File getResourcePackDirectory() {
-		return Minecraft.getInstance().getResourcePackDir().toFile();
+		return Minecraft.getInstance().getResourcePackDirectory().toFile();
 	}
 
 	@MappedMethod
 	public static void getEntities(Consumer<Entity> consumer) {
-		final ClientLevel clientWorld = Minecraft.getInstance().world;
+		final ClientLevel clientWorld = Minecraft.getInstance().level;
 		if (clientWorld != null) {
-			clientWorld.getEntities().forEach(entity -> consumer.accept(new Entity(entity)));
+			clientWorld.entitiesForRendering().forEach(entity -> consumer.accept(new Entity(entity)));
 		}
 	}
 
 	@MappedMethod
 	public static void addEntity(EntityAbstractMapping entity) {
-		final ClientLevel clientWorld = Minecraft.getInstance().world;
+		final ClientLevel clientWorld = Minecraft.getInstance().level;
 		if (clientWorld != null) {
 			clientWorld.addEntity(entity);
 		}

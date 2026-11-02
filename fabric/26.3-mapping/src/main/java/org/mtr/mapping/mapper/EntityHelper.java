@@ -18,26 +18,26 @@ public final class EntityHelper extends DummyClass {
 
 	@MappedMethod
 	public static float getPitch(Entity entity) {
-		return entity.data.getPitch();
+		return entity.data.getXRot();
 	}
 
 	@MappedMethod
 	public static float getYaw(Entity entity) {
-		return entity.data.getYaw();
+		return entity.data.getYRot();
 	}
 
 	@MappedMethod
 	public static void setPitch(Entity entity, float pitch) {
-		entity.data.setPitch(pitch);
+		entity.data.setXRot(pitch);
 	}
 
 	@MappedMethod
 	public static void setYaw(Entity entity, float yaw) {
-		entity.data.setYaw(yaw);
+		entity.data.setYRot(yaw);
 	}
 
 	@MappedMethod
 	public static void spawnItem(ServerWorld serverWorld, BlockPos blockPos, ItemStack itemStack) {
-		serverWorld.data.spawnEntity(new ItemEntity(serverWorld.data, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, itemStack.data));
+		serverWorld.data.addFreshEntity(new ItemEntity(serverWorld.data, blockPos.data.getX() + 0.5, blockPos.data.getY() + 0.5, blockPos.data.getZ() + 0.5, itemStack.data));
 	}
 }

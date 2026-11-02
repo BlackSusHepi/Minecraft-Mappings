@@ -43,7 +43,7 @@ public final class ResourceManagerHelper extends DummyClass {
 	@MappedMethod
 	public static void readAllResources(Identifier identifier, Consumer<InputStream> consumer) {
 		try {
-			Minecraft.getInstance().getResourceManager().getAllResources(identifier.data).forEach(resource -> readResource(resource, consumer));
+			Minecraft.getInstance().getResourceManager().getResourceStack(identifier.data).forEach(resource -> readResource(resource, consumer));
 		} catch (Exception e) {
 			logException(e);
 		}
@@ -53,7 +53,7 @@ public final class ResourceManagerHelper extends DummyClass {
 	public static void readDirectory(String path, BiConsumer<Identifier, InputStream> consumer) {
 		try {
 			Minecraft.getInstance().getResourceManager()
-					.findAllResources(path, identifier -> true)
+					.listResourceStacks(path, identifier -> true)
 					.forEach((identifier, resources) -> resources.forEach(resource -> readResource(resource, inputStream -> consumer.accept(new Identifier(identifier), inputStream))));
 		} catch (Exception e) {
 			logException(e);
@@ -61,7 +61,7 @@ public final class ResourceManagerHelper extends DummyClass {
 	}
 
 	private static void readResource(Resource resource, Consumer<InputStream> consumer) {
-		try (final InputStream inputStream = resource.getInputStream()) {
+		try (final InputStream inputStream = resource.open()) {
 			consumer.accept(inputStream);
 		} catch (Exception e) {
 			logException(e);
@@ -70,11 +70,11 @@ public final class ResourceManagerHelper extends DummyClass {
 
 	@MappedMethod
 	public static int getResourcePackVersion() {
-		return DetectedVersion.create().getResourceVersion(PackType.CLIENT_RESOURCES);
+		return net.minecraft.SharedConstants.RESOURCE_PACK_FORMAT_MAJOR;
 	}
 
 	@MappedMethod
 	public static int getDataPackVersion() {
-		return DetectedVersion.create().getResourceVersion(PackType.SERVER_DATA);
+		return net.minecraft.SharedConstants.DATA_PACK_FORMAT_MAJOR;
 	}
 }
