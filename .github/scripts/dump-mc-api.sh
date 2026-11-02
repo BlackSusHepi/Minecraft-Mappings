@@ -9,7 +9,7 @@ while IFS= read -r j; do
 done < <(find ~/.gradle "$GITHUB_WORKSPACE" -name '*.jar' -size +10M 2>/dev/null | grep -v -E 'sources|javadoc' )
 echo "Minecraft jar: $JAR" | tee "$OUT/jar-path.txt"
 [ -z "$JAR" ] && exit 1
-unzip -Z1 "$JAR" | grep '^net/minecraft/.*\.class$' | sed 's/\.class$//; s#/#.#g' | sort > "$OUT/classes.txt"
+unzip -Z1 "$JAR" | grep -E "^(net/minecraft|com/mojang/blaze3d|com/mojang/math|com/mojang/blaze3d)/.*\.class$" | sed 's/\.class$//; s#/#.#g' | sort > "$OUT/classes.txt"
 wc -l "$OUT/classes.txt"
 # public/protected signatures, 400 classes per javap call
 grep -v '\$[0-9]' "$OUT/classes.txt" | xargs -n 400 javap -protected -cp "$JAR" > "$OUT/signatures.txt" 2>"$OUT/javap-errors.txt"
