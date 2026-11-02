@@ -33,10 +33,13 @@ jobs:
         with:
           gradle-version: 9.8.2
 
-      # 1. Scan every older Minecraft version (needed to know which methods exist in ALL versions). Same as upstream CI.
-      - name: Scan older versions (dry run)
-        run: JAVA_HOME=$JAVA_HOME_17_X64 ./gradlew test -x common:test --continue -Pgenerate=dryRun 2>&1 | tee scan-old.log
-        continue-on-error: true
+      # 1. Method lists of every older Minecraft version (needed to know which methods exist in ALL versions).
+      #    These never change, so they are stored in .github/existing-methods (produced by the upstream "dry run" scan).
+      - name: Restore older versions' method lists
+        run: |
+          mkdir -p build/existingMethods
+          cp .github/existing-methods/*.json build/existingMethods/
+          ls build/existingMethods
       # 2. Scan 26.3
       - name: Scan 26.3 (dry run)
         run: JAVA_HOME=$JAVA_HOME_25_X64 gradle -Ptarget26 test -x common:test --continue -Pgenerate=dryRun 2>&1 | tee scan-26.log
@@ -53,7 +56,7 @@ jobs:
         if: always()
         run: |
           mkdir /tmp/pub
-          cp mc-api/classes.txt mc-api/jar-path.txt mc-api/javap-errors.txt mc-api/where-is.txt /tmp/pub/ || true
+          cp mc-api/classes.txt mc-api/jar-path.txt mc-api/javap-errors.txt  /tmp/pub/ || true
           gzip -c mc-api/signatures.txt > /tmp/pub/signatures.txt.gz || true
           tar czf /tmp/pub/holders.tar.gz -C fabric/26.3-mapping/src/main/java/org/mtr/mapping holder || true
           tar czf /tmp/pub/existingMethods.tar.gz build/existingMethods build/libraryMethods || true

@@ -15,12 +15,3 @@ wc -l "$OUT/classes.txt"
 grep -v '\$[0-9]' "$OUT/classes.txt" | xargs -n 400 javap -protected -cp "$JAR" > "$OUT/signatures.txt" 2>"$OUT/javap-errors.txt"
 wc -l "$OUT/signatures.txt"
 
-# Where do the vertex/GPU classes live? (they are not all in the Minecraft jar in 26.x)
-{
-  for c in com/mojang/blaze3d/vertex/VertexFormat com/mojang/blaze3d/vertex/Tesselator com/mojang/blaze3d/vertex/VertexFormatElement; do
-    echo "## $c"
-    find ~/.gradle "$GITHUB_WORKSPACE" -name '*.jar' 2>/dev/null | while read -r j; do unzip -l "$j" 2>/dev/null | grep -q "$c.class" && echo "$j"; done
-  done
-  echo "## any class named *VertexFormat*|*Tesselator* in any jar"
-  find ~/.gradle -name '*.jar' 2>/dev/null | while read -r j; do unzip -Z1 "$j" 2>/dev/null | grep -E 'VertexFormat|Tesselator|NativeImage' | sed "s#^#$j :: #"; done | head -60
-} > "$OUT/where-is.txt" 2>&1
