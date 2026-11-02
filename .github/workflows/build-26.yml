@@ -47,7 +47,7 @@ jobs:
         if: always()
         run: |
           mkdir /tmp/pub
-          cp mc-api/classes.txt mc-api/jar-path.txt mc-api/javap-errors.txt /tmp/pub/ || true
+          cp mc-api/classes.txt mc-api/jar-path.txt mc-api/javap-errors.txt mc-api/where-is.txt /tmp/pub/ || true
           gzip -c mc-api/signatures.txt > /tmp/pub/signatures.txt.gz || true
           cd /tmp/pub
           git init -q -b mc-api-26.3
