@@ -4,6 +4,9 @@ on:
     branches: [ "port-26.3" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,6 +42,18 @@ jobs:
       - name: Dump Minecraft 26.3 API (class names and signatures)
         if: always()
         run: .github/scripts/dump-mc-api.sh mc-api
+        continue-on-error: true
+      - name: Publish API dump to branch mc-api-26.3
+        if: always()
+        run: |
+          mkdir /tmp/pub
+          cp mc-api/classes.txt mc-api/jar-path.txt mc-api/javap-errors.txt /tmp/pub/ || true
+          gzip -c mc-api/signatures.txt > /tmp/pub/signatures.txt.gz || true
+          cd /tmp/pub
+          git init -q -b mc-api-26.3
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git add . && git commit -q -m "Minecraft 26.3 API dump"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" mc-api-26.3
         continue-on-error: true
       - name: Build 26.3 mapping jar
         run: gradle -Ptarget26 fabric:26.3-mapping:build -x test 2>&1 | tee build.log
