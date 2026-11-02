@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
       - name: Setup JDKs (8 for common/buildSrc, 25 for Minecraft 26.x)
@@ -33,6 +36,10 @@ jobs:
       - name: Generate holders
         run: gradle -Ptarget26 test -x common:test --continue -Pgenerate=normal 2>&1 | tee generate.log
         continue-on-error: true
+      - name: Dump Minecraft 26.3 API (class names and signatures)
+        if: always()
+        run: .github/scripts/dump-mc-api.sh mc-api
+        continue-on-error: true
       - name: Build 26.3 mapping jar
         run: gradle -Ptarget26 fabric:26.3-mapping:build -x test 2>&1 | tee build.log
       - name: Upload logs and jars
@@ -42,4 +49,5 @@ jobs:
           name: build-26.3
           path: |
             *.log
+            mc-api/
             build/release/*.jar
