@@ -9,11 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup JDK 25
+      - name: Setup JDKs (8 for common/buildSrc, 25 for Minecraft 26.x)
         uses: actions/setup-java@v4
         with:
-          java-version: 25
+          java-version: |
+            8
+            25
           distribution: temurin
+      - name: Let Gradle find the installed JDKs
+        run: |
+          mkdir -p ~/.gradle
+          echo "org.gradle.java.installations.fromEnv=JAVA_HOME_8_X64,JAVA_HOME_25_X64" >> ~/.gradle/gradle.properties
+          echo "org.gradle.java.installations.auto-download=false" >> ~/.gradle/gradle.properties
       - name: Setup Gradle 9.8.2
         uses: gradle/actions/setup-gradle@v4
         with:
