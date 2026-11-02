@@ -1,0 +1,60 @@
+import org.mtr.mapping.BuildTools
+
+// Build script for Minecraft 26.x (unobfuscated). Used only when running Gradle with -Ptarget26.
+plugins {
+	id "java"
+	id "net.fabricmc.fabric-loom" version "1.19-SNAPSHOT" apply false
+}
+
+subprojects {
+	apply plugin: "java"
+	apply plugin: "net.fabricmc.fabric-loom"
+
+	final BuildTools buildTools = new BuildTools(project, rootProject.getProperties().getOrDefault("generate", "").toString())
+
+	loom {
+		accessWidenerPath = file("src/main/resources/minecraft-mappings.accesswidener")
+	}
+
+	dependencies {
+		implementation project(":common")
+		minecraft "com.mojang:minecraft:${buildTools.minecraftVersion}"
+		// No "mappings" line: 26.x is not obfuscated
+		implementation "net.fabricmc:fabric-loader:0.20.1"
+		implementation "net.fabricmc.fabric-api:fabric-api:0.165.0+26.3"
+		compileOnly "com.google.code.findbugs:jsr305:+"
+		testImplementation "org.junit.jupiter:junit-jupiter-api:5.+"
+		testImplementation "org.junit.platform:junit-platform-launcher:1.+"
+		testImplementation "com.google.code.gson:gson:+"
+		testImplementation "org.reflections:reflections:+"
+		testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.+"
+	}
+
+	java {
+		toolchain {
+			languageVersion.set(JavaLanguageVersion.of(buildTools.javaLanguageVersion))
+		}
+		withSourcesJar()
+	}
+
+	jar {
+		doLast {
+			buildTools.copyBuildFile(true)
+			buildTools.copyBuildFile(false)
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+		testLogging { showStandardStreams = true }
+	}
+
+	tasks.withType(AbstractArchiveTask).configureEach {
+		preserveFileTimestamps = false
+		reproducibleFileOrder = true
+	}
+
+	tasks.withType(Javadoc).tap {
+		configureEach { javadoc.options.addStringOption("Xdoclint:none", "-quiet") }
+	}
+}

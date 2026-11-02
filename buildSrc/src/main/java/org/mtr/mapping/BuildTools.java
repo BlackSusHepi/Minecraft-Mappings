@@ -34,6 +34,7 @@ public final class BuildTools {
 	private final String version;
 	private final boolean isGeneratorProject;
 	private final boolean isCommon;
+	private final boolean isUnobfuscated; // Minecraft 26.x and above ship without obfuscation (no remapping)
 
 	private static boolean needsSetup = true;
 	private static final int MAPPINGS_TO_USE = 5; // Fabric 1.20.x
@@ -44,8 +45,9 @@ public final class BuildTools {
 		final String[] projectNameSplit = path.getFileName().toString().split("-");
 		minecraftVersion = projectNameSplit[0];
 		isCommon = minecraftVersion.equals("common");
-		final int majorVersion = isCommon ? 0 : Integer.parseInt(minecraftVersion.split("\\.")[1]);
-		javaLanguageVersion = majorVersion <= 16 ? 8 : majorVersion == 17 ? 16 : 17;
+		isUnobfuscated = !isCommon && Integer.parseInt(minecraftVersion.split("\\.")[0]) >= 26;
+		final int majorVersion = isCommon ? 0 : isUnobfuscated ? 26 : Integer.parseInt(minecraftVersion.split("\\.")[1]);
+		javaLanguageVersion = isUnobfuscated ? 25 : majorVersion <= 16 ? 8 : majorVersion == 17 ? 16 : 17;
 		isGeneratorProject = projectNameSplit.length > 1 && projectNameSplit[1].equals("generator");
 		final Path parentPath = path.getParent();
 		loader = parentPath.getFileName().toString();
@@ -184,7 +186,7 @@ public final class BuildTools {
 				);
 			} else {
 				Files.copy(
-						path.resolve(String.format(loader.equals("fabric") && isDev ? "build/devlibs/%s-mapping-%s-dev.jar" : "build/libs/%s-mapping-%s.jar", minecraftVersion, version)),
+						path.resolve(String.format(loader.equals("fabric") && isDev && !isUnobfuscated ? "build/devlibs/%s-mapping-%s-dev.jar" : "build/libs/%s-mapping-%s.jar", minecraftVersion, version)),
 						directory.resolve(String.format("Minecraft-Mappings-%s-%s-%s%s.jar", loader, minecraftVersion, version, isDev ? "-dev" : "")),
 						StandardCopyOption.REPLACE_EXISTING
 				);
