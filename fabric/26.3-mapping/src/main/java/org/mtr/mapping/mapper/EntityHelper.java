@@ -1,6 +1,6 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.entity.ItemEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.Entity;

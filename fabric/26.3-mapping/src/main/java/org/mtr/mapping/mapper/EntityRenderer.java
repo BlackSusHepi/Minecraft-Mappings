@@ -2,7 +2,7 @@ package org.mtr.mapping.mapper;
 
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.Frustum;
 import org.mtr.mapping.holder.Identifier;
@@ -16,7 +16,7 @@ public abstract class EntityRenderer<T extends EntityExtension> extends net.mine
 
 	@Deprecated
 	@Override
-	public final void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+	public final void render(T entity, float yaw, float tickDelta, PoseStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 		GraphicsHolder.createInstanceSafe(matrices, vertexConsumers, graphicsHolder -> render(entity, yaw, tickDelta, graphicsHolder, light));
 	}
 

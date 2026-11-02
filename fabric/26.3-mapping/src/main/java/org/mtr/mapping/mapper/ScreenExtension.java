@@ -1,6 +1,6 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.ClickableWidget;
 import org.mtr.mapping.holder.MutableText;
@@ -33,7 +33,7 @@ public class ScreenExtension extends ScreenAbstractMapping {
 
 	@Deprecated
 	@Override
-	public final void render(DrawContext context, int mouseX, int mouseY, float delta) {
+	public final void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 		GraphicsHolder.createInstanceSafe(context, graphicsHolder -> render(graphicsHolder, mouseX, mouseY, delta));
 	}
 
@@ -46,7 +46,7 @@ public class ScreenExtension extends ScreenAbstractMapping {
 
 	@Deprecated
 	@Override
-	public final void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+	public final void renderBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 	}
 
 	@MappedMethod

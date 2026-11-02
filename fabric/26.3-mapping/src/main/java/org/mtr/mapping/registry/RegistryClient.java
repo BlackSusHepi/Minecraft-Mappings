@@ -9,8 +9,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.network.PacketByteBuf;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.network.FriendlyByteBuf;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.*;
@@ -62,7 +62,7 @@ public final class RegistryClient extends DummyClass {
 
 	@MappedMethod
 	public KeyBinding registerKeyBinding(String translationKey, int key, String categoryKey) {
-		return new KeyBinding(KeyBindingHelper.registerKeyBinding(new net.minecraft.client.option.KeyBinding(translationKey, InputUtil.Type.KEYSYM, key, categoryKey)));
+		return new KeyBinding(KeyBindingHelper.registerKeyBinding(new net.minecraft.client.option.KeyBinding(translationKey, InputConstants.Type.KEYSYM, key, categoryKey)));
 	}
 
 	@MappedMethod
@@ -104,7 +104,7 @@ public final class RegistryClient extends DummyClass {
 			final PacketBufferSender packetBufferSender = new PacketBufferSender(PacketByteBufs::create);
 			packetBufferSender.writeString(data.getClass().getName());
 			data.write(packetBufferSender);
-			packetBufferSender.send(byteBuf -> ClientPlayNetworking.send(registry.packetsIdentifier.data, byteBuf instanceof PacketByteBuf ? (PacketByteBuf) byteBuf : new PacketByteBuf(byteBuf)), MinecraftClient.getInstance()::execute);
+			packetBufferSender.send(byteBuf -> ClientPlayNetworking.send(registry.packetsIdentifier.data, byteBuf instanceof FriendlyByteBuf ? (FriendlyByteBuf) byteBuf : new FriendlyByteBuf(byteBuf)), MinecraftClient.getInstance()::execute);
 		}
 	}
 

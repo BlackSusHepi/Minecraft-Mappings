@@ -1,7 +1,7 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.holder.Text;
@@ -32,7 +32,7 @@ public class TextFieldWidgetExtension extends TextFieldWidgetAbstractMapping {
 
 	@MappedMethod
 	public TextFieldWidgetExtension(int x, int y, int width, int height, MutableText text, int maxLength, TextCase textCase, @RegEx @Nullable String filter, @Nullable String suggestion) {
-		super(new TextRenderer(MinecraftClient.getInstance().textRenderer), x, y, width, height, new Text(text.data));
+		super(new TextRenderer(Minecraft.getInstance().textRenderer), x, y, width, height, new Text(text.data));
 		this.maxLength = maxLength;
 		this.textCase = textCase;
 		this.filter = filter;
@@ -51,7 +51,7 @@ public class TextFieldWidgetExtension extends TextFieldWidgetAbstractMapping {
 
 	@Deprecated
 	@Override
-	public final void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+	public final void renderWidget(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 		GraphicsHolder.createInstanceSafe(context, graphicsHolder -> render(graphicsHolder, mouseX, mouseY, delta));
 	}
 

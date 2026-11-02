@@ -2,8 +2,8 @@ package org.mtr.mapping.mapper;
 
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec3d;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.phys.Vec3;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.Vector3d;
 
@@ -15,7 +15,7 @@ public abstract class BlockEntityRenderer<T extends BlockEntityExtension> implem
 
 	@Deprecated
 	@Override
-	public final void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public final void render(T entity, float tickDelta, PoseStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		GraphicsHolder.createInstanceSafe(matrices, vertexConsumers, graphicsHolder -> render(entity, tickDelta, graphicsHolder, light, overlay));
 	}
 
@@ -51,7 +51,7 @@ public abstract class BlockEntityRenderer<T extends BlockEntityExtension> implem
 
 	@Deprecated
 	@Override
-	public final boolean isInRenderDistance(T blockEntity, Vec3d position) {
+	public final boolean isInRenderDistance(T blockEntity, Vec3 position) {
 		return isInRenderDistance(blockEntity, new Vector3d(position));
 	}
 

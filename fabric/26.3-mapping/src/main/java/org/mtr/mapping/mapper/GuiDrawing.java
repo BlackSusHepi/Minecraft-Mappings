@@ -1,7 +1,7 @@
 package org.mtr.mapping.mapper;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.render.*;
 import org.joml.Matrix4f;
 import org.mtr.mapping.annotation.MappedMethod;
@@ -12,7 +12,7 @@ import org.mtr.mapping.tool.DummyClass;
 public final class GuiDrawing extends DummyClass {
 
 	private VertexConsumer vertexConsumer;
-	private DrawContext drawContext;
+	private GuiGraphicsExtractor drawContext;
 	private BufferBuilder bufferBuilder;
 	private Matrix4f matrix;
 	private final GraphicsHolder graphicsHolder;

@@ -1,6 +1,6 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.datafixer.DataFixTypes;
+import net.minecraft.util.datafix.DataFixTypes;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.CompoundTag;
 import org.mtr.mapping.holder.PersistentStateAbstractMapping;

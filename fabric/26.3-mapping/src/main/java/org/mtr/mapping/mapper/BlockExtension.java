@@ -1,8 +1,8 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.state.StateManager;
-import net.minecraft.text.Text;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.LevelReader;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.*;
 
@@ -32,25 +32,25 @@ public class BlockExtension extends BlockAbstractMapping implements BlockHelper 
 	@Nonnull
 	@MappedMethod
 	public ItemStack getPickStack2(BlockView world, BlockPos pos, BlockState state) {
-		return world.data instanceof WorldView ? new ItemStack(super.getPickStack((WorldView) world.data, pos.data, state.data)) : ItemStack.getEmptyMapped();
+		return world.data instanceof LevelReader ? new ItemStack(super.getPickStack((LevelReader) world.data, pos.data, state.data)) : ItemStack.getEmptyMapped();
 	}
 
 	@Nonnull
 	@Deprecated
 	@Override
-	public final net.minecraft.item.ItemStack getPickStack(WorldView world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+	public final net.minecraft.item.ItemStack getPickStack(LevelReader world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
 		return getPickStack2(new BlockView(world), new BlockPos(pos), new BlockState(state)).data;
 	}
 
 	@Deprecated
 	@Override
-	protected final void appendProperties(StateManager.Builder<net.minecraft.block.Block, net.minecraft.block.BlockState> builder) {
+	protected final void appendProperties(StateDefinition.Builder<net.minecraft.block.Block, net.minecraft.block.BlockState> builder) {
 		appendPropertiesHelper(builder);
 	}
 
 	@Deprecated
 	@Override
-	public final void appendTooltip(net.minecraft.item.ItemStack stack, @Nullable net.minecraft.world.BlockView world, List<Text> tooltip, net.minecraft.client.item.TooltipContext options) {
+	public final void appendTooltip(net.minecraft.item.ItemStack stack, @Nullable net.minecraft.world.BlockView world, List<Component> tooltip, net.minecraft.client.item.TooltipContext options) {
 		appendTooltipHelper(new ItemStack(stack), world == null ? null : new BlockView(world), tooltip, new TooltipContext(options));
 	}
 

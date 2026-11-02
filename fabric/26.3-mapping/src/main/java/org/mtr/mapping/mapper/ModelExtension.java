@@ -1,11 +1,11 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.client.model.ModelData;
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.model.ModelPartData;
-import net.minecraft.client.model.TexturedModelData;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.Identifier;
 import org.mtr.mapping.holder.ModelAbstractMapping;
@@ -19,8 +19,8 @@ public abstract class ModelExtension extends ModelAbstractMapping implements Mod
 
 	private final int textureWidth;
 	private final int textureHeight;
-	private final ModelData modelData = new ModelData();
-	private final ModelPartData modelPartData = modelData.getRoot();
+	private final MeshDefinition modelData = new MeshDefinition();
+	private final PartDefinition modelPartData = modelData.getRoot();
 	private final List<ModelPartExtension> modelPartExtensions = new ArrayList<>();
 
 	@MappedMethod
@@ -32,7 +32,7 @@ public abstract class ModelExtension extends ModelAbstractMapping implements Mod
 
 	@Deprecated
 	@Override
-	public final void render(MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
+	public final void render(PoseStack matrixStack, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
 		render3(matrixStack, vertexConsumer, light, overlay, red, green, blue, alpha);
 	}
 
@@ -45,7 +45,7 @@ public abstract class ModelExtension extends ModelAbstractMapping implements Mod
 
 	@MappedMethod
 	public final void buildModel() {
-		final ModelPart modelPart = TexturedModelData.of(modelData, textureWidth, textureHeight).createModel();
+		final ModelPart modelPart = LayerDefinition.of(modelData, textureWidth, textureHeight).createModel();
 		modelPartExtensions.forEach(modelPartExtension -> modelPartExtension.setModelPart(modelPart));
 	}
 }

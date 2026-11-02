@@ -1,6 +1,6 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.ItemStack;
 import org.mtr.mapping.holder.MutableText;
@@ -19,7 +19,7 @@ public interface ItemHelper extends DummyInterface {
 	}
 
 	@Deprecated
-	default void appendTooltipHelper(ItemStack stack, @Nullable World world, List<Text> tooltipList, TooltipContext options) {
+	default void appendTooltipHelper(ItemStack stack, @Nullable World world, List<Component> tooltipList, TooltipContext options) {
 		final List<MutableText> newTooltipList = new ArrayList<>();
 		addTooltips(stack, world, newTooltipList, options);
 		newTooltipList.forEach(mutableText -> tooltipList.add(mutableText.data));

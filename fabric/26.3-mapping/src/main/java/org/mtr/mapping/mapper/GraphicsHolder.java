@@ -1,14 +1,14 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.RotationAxis;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.mtr.mapping.annotation.MappedMethod;
@@ -26,9 +26,9 @@ public final class GraphicsHolder extends DummyClass {
 	VertexConsumer vertexConsumer;
 	private int matrixPushes;
 
-	final MatrixStack matrixStack;
+	final PoseStack matrixStack;
 	final VertexConsumerProvider vertexConsumerProvider;
-	final DrawContext drawContext;
+	final GuiGraphicsExtractor drawContext;
 
 	@MappedMethod
 	public static int getDefaultLight() {
@@ -36,12 +36,12 @@ public final class GraphicsHolder extends DummyClass {
 	}
 
 	@Deprecated
-	public static void createInstanceSafe(@Nullable MatrixStack matrixStack, @Nullable VertexConsumerProvider vertexConsumerProvider, Consumer<GraphicsHolder> consumer) {
+	public static void createInstanceSafe(@Nullable PoseStack matrixStack, @Nullable VertexConsumerProvider vertexConsumerProvider, Consumer<GraphicsHolder> consumer) {
 		createInstanceSafe(new GraphicsHolder(matrixStack, vertexConsumerProvider), consumer);
 	}
 
 	@Deprecated
-	public static void createInstanceSafe(DrawContext drawContext, Consumer<GraphicsHolder> consumer) {
+	public static void createInstanceSafe(GuiGraphicsExtractor drawContext, Consumer<GraphicsHolder> consumer) {
 		createInstanceSafe(new GraphicsHolder(drawContext), consumer);
 	}
 
@@ -57,14 +57,14 @@ public final class GraphicsHolder extends DummyClass {
 		}
 	}
 
-	private GraphicsHolder(@Nullable MatrixStack matrixStack, @Nullable VertexConsumerProvider vertexConsumerProvider) {
+	private GraphicsHolder(@Nullable PoseStack matrixStack, @Nullable VertexConsumerProvider vertexConsumerProvider) {
 		this.matrixStack = matrixStack;
 		this.vertexConsumerProvider = vertexConsumerProvider;
 		drawContext = null;
 		push();
 	}
 
-	private GraphicsHolder(DrawContext drawContext) {
+	private GraphicsHolder(GuiGraphicsExtractor drawContext) {
 		this.matrixStack = drawContext.getMatrices();
 		this.vertexConsumerProvider = drawContext.getVertexConsumers();
 		this.drawContext = drawContext;
@@ -104,42 +104,42 @@ public final class GraphicsHolder extends DummyClass {
 	@MappedMethod
 	public void rotateXRadians(float angle) {
 		if (matrixStack != null) {
-			matrixStack.multiply(RotationAxis.POSITIVE_X.rotation(angle));
+			matrixStack.multiply(Axis.POSITIVE_X.rotation(angle));
 		}
 	}
 
 	@MappedMethod
 	public void rotateYRadians(float angle) {
 		if (matrixStack != null) {
-			matrixStack.multiply(RotationAxis.POSITIVE_Y.rotation(angle));
+			matrixStack.multiply(Axis.POSITIVE_Y.rotation(angle));
 		}
 	}
 
 	@MappedMethod
 	public void rotateZRadians(float angle) {
 		if (matrixStack != null) {
-			matrixStack.multiply(RotationAxis.POSITIVE_Z.rotation(angle));
+			matrixStack.multiply(Axis.POSITIVE_Z.rotation(angle));
 		}
 	}
 
 	@MappedMethod
 	public void rotateXDegrees(float angle) {
 		if (matrixStack != null) {
-			matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(angle));
+			matrixStack.multiply(Axis.POSITIVE_X.rotationDegrees(angle));
 		}
 	}
 
 	@MappedMethod
 	public void rotateYDegrees(float angle) {
 		if (matrixStack != null) {
-			matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(angle));
+			matrixStack.multiply(Axis.POSITIVE_Y.rotationDegrees(angle));
 		}
 	}
 
 	@MappedMethod
 	public void rotateZDegrees(float angle) {
 		if (matrixStack != null) {
-			matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(angle));
+			matrixStack.multiply(Axis.POSITIVE_Z.rotationDegrees(angle));
 		}
 	}
 
@@ -152,7 +152,7 @@ public final class GraphicsHolder extends DummyClass {
 	public void drawText(MutableText mutableText, int x, int y, int color, boolean shadow, int light) {
 		if (matrixStack != null) {
 			final VertexConsumerProvider.Immediate immediate = drawContext == null ? VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer()) : drawContext.getVertexConsumers();
-			getInstance().textRenderer.draw(mutableText.data, x, y, color, shadow, matrixStack.peek().getPositionMatrix(), immediate, TextRenderer.TextLayerType.NORMAL, 0, light);
+			getInstance().textRenderer.draw(mutableText.data, x, y, color, shadow, matrixStack.peek().getPositionMatrix(), immediate, Font.TextLayerType.NORMAL, 0, light);
 			if (drawContext == null) {
 				immediate.draw();
 			} else {
@@ -165,7 +165,7 @@ public final class GraphicsHolder extends DummyClass {
 	public void drawText(OrderedText orderedText, int x, int y, int color, boolean shadow, int light) {
 		if (matrixStack != null) {
 			final VertexConsumerProvider.Immediate immediate = drawContext == null ? VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer()) : drawContext.getVertexConsumers();
-			getInstance().textRenderer.draw(orderedText.data, x, y, color, shadow, matrixStack.peek().getPositionMatrix(), immediate, TextRenderer.TextLayerType.NORMAL, 0, light);
+			getInstance().textRenderer.draw(orderedText.data, x, y, color, shadow, matrixStack.peek().getPositionMatrix(), immediate, Font.TextLayerType.NORMAL, 0, light);
 			if (drawContext == null) {
 				immediate.draw();
 			} else {
@@ -178,7 +178,7 @@ public final class GraphicsHolder extends DummyClass {
 	public void drawText(String text, int x, int y, int color, boolean shadow, int light) {
 		if (matrixStack != null) {
 			final VertexConsumerProvider.Immediate immediate = drawContext == null ? VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer()) : drawContext.getVertexConsumers();
-			getInstance().textRenderer.draw(text, x, y, color, shadow, matrixStack.peek().getPositionMatrix(), immediate, TextRenderer.TextLayerType.NORMAL, 0, light);
+			getInstance().textRenderer.draw(text, x, y, color, shadow, matrixStack.peek().getPositionMatrix(), immediate, Font.TextLayerType.NORMAL, 0, light);
 			if (drawContext == null) {
 				immediate.draw();
 			} else {
@@ -221,8 +221,8 @@ public final class GraphicsHolder extends DummyClass {
 		return getInstance().textRenderer.wrapLines(mutableText.data, width).stream().map(OrderedText::new).collect(Collectors.toList());
 	}
 
-	private static MinecraftClient getInstance() {
-		return MinecraftClient.getInstance();
+	private static Minecraft getInstance() {
+		return Minecraft.getInstance();
 	}
 
 	/**
@@ -242,7 +242,7 @@ public final class GraphicsHolder extends DummyClass {
 	public void drawLineInWorld(float x1, float y1, float z1, float x2, float y2, float z2, int color) {
 		if (matrixStack != null && vertexConsumer != null) {
 			ColorHelper.unpackColor(color, (a, r, g, b) -> {
-				final MatrixStack.Entry entry = matrixStack.peek();
+				final PoseStack.Entry entry = matrixStack.peek();
 				final Matrix4f matrix4f = entry.getPositionMatrix();
 				final Matrix3f matrix3f = entry.getNormalMatrix();
 
@@ -264,7 +264,7 @@ public final class GraphicsHolder extends DummyClass {
 				final int y = vector3i.getY();
 				final int z = vector3i.getZ();
 
-				final MatrixStack.Entry entry = matrixStack.peek();
+				final PoseStack.Entry entry = matrixStack.peek();
 				final Matrix4f matrix4f = entry.getPositionMatrix();
 				final Matrix3f matrix3f = entry.getNormalMatrix();
 

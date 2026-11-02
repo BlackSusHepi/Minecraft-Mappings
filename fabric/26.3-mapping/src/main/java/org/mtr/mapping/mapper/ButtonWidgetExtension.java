@@ -1,6 +1,6 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.ButtonWidgetAbstractMapping;
 import org.mtr.mapping.holder.MutableText;
@@ -34,7 +34,7 @@ public class ButtonWidgetExtension extends ButtonWidgetAbstractMapping {
 
 	@Deprecated
 	@Override
-	public final void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+	public final void renderWidget(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 		GraphicsHolder.createInstanceSafe(context, graphicsHolder -> render(graphicsHolder, mouseX, mouseY, delta));
 	}
 

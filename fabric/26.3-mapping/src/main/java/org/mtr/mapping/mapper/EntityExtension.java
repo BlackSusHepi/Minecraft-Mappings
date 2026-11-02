@@ -1,6 +1,6 @@
 package org.mtr.mapping.mapper;
 
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 import org.mtr.mapping.annotation.MappedMethod;
 import org.mtr.mapping.holder.EntityAbstractMapping;
 import org.mtr.mapping.holder.EntityType;
@@ -15,12 +15,12 @@ public abstract class EntityExtension extends EntityAbstractMapping {
 
 	@Deprecated
 	@Override
-	protected final void readCustomDataFromNbt(NbtCompound nbt) {
+	protected final void readCustomDataFromNbt(CompoundTag nbt) {
 	}
 
 	@Deprecated
 	@Override
-	protected final void writeCustomDataToNbt(NbtCompound nbt) {
+	protected final void writeCustomDataToNbt(CompoundTag nbt) {
 	}
 
 	@MappedMethod
