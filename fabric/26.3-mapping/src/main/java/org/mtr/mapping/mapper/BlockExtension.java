@@ -24,7 +24,7 @@ public class BlockExtension extends BlockAbstractMapping implements BlockHelper 
 
 	@Deprecated
 	@Override
-	public final net.minecraft.block.BlockState onBreak(net.minecraft.world.World world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state, net.minecraft.entity.player.PlayerEntity player) {
+	public final net.minecraft.world.level.block.state.BlockState onBreak(net.minecraft.world.level.Level world, net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.entity.player.Player player) {
 		onBreak2(new World(world), new BlockPos(pos), new BlockState(state), new PlayerEntity(player));
 		return state;
 	}
@@ -38,19 +38,19 @@ public class BlockExtension extends BlockAbstractMapping implements BlockHelper 
 	@Nonnull
 	@Deprecated
 	@Override
-	public final net.minecraft.item.ItemStack getPickStack(LevelReader world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+	public final net.minecraft.world.item.ItemStack getPickStack(LevelReader world, net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
 		return getPickStack2(new BlockView(world), new BlockPos(pos), new BlockState(state)).data;
 	}
 
 	@Deprecated
 	@Override
-	protected final void appendProperties(StateDefinition.Builder<net.minecraft.block.Block, net.minecraft.block.BlockState> builder) {
+	protected final void appendProperties(StateDefinition.Builder<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.state.BlockState> builder) {
 		appendPropertiesHelper(builder);
 	}
 
 	@Deprecated
 	@Override
-	public final void appendTooltip(net.minecraft.item.ItemStack stack, @Nullable net.minecraft.world.BlockView world, List<Component> tooltip, net.minecraft.client.item.TooltipContext options) {
+	public final void appendTooltip(net.minecraft.world.item.ItemStack stack, @Nullable net.minecraft.world.level.BlockGetter world, List<Component> tooltip, net.minecraft.world.item.Item.TooltipContext options) {
 		appendTooltipHelper(new ItemStack(stack), world == null ? null : new BlockView(world), tooltip, new TooltipContext(options));
 	}
 

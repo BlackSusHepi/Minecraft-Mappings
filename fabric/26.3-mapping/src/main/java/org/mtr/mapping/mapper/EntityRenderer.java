@@ -25,7 +25,7 @@ public abstract class EntityRenderer<T extends EntityExtension> extends net.mine
 
 	@Deprecated
 	@Override
-	public final net.minecraft.util.Identifier getTexture(T entity) {
+	public final net.minecraft.resources.Identifier getTexture(T entity) {
 		return getTexture2(entity).data;
 	}
 
@@ -34,7 +34,7 @@ public abstract class EntityRenderer<T extends EntityExtension> extends net.mine
 
 	@Deprecated
 	@Override
-	public final boolean shouldRender(T entity, net.minecraft.client.render.Frustum frustum, double x, double y, double z) {
+	public final boolean shouldRender(T entity, net.minecraft.client.renderer.culling.Frustum frustum, double x, double y, double z) {
 		return shouldRender2(entity, new Frustum(frustum), x, y, z);
 	}
 

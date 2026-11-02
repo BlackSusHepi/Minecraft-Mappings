@@ -31,7 +31,7 @@ public final class TextHelper extends DummyClass {
 
 	@MappedMethod
 	public static MutableText append(MutableText baseText, MutableText... moreText) {
-		net.minecraft.text.MutableText result = baseText.data;
+		net.minecraft.network.chat.MutableComponent result = baseText.data;
 		for (final MutableText mutableText : moreText) {
 			result = result.append(mutableText.data);
 		}

@@ -30,7 +30,7 @@ public abstract class ParticleFactoryExtension implements ParticleFactory<Simple
 	}
 
 	@Deprecated
-	public final net.minecraft.client.particle.Particle createParticle(SimpleParticleType defaultParticleType, net.minecraft.client.world.ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+	public final net.minecraft.client.particle.Particle createParticle(SimpleParticleType defaultParticleType, net.minecraft.client.multiplayer.ClientLevel clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 		if (createParticle != null) {
 			return createParticle.create(new ClientWorld(clientWorld), x, y, z, velocityX, velocityY, velocityZ).data;
 		} else if (createSpriteBillboardParticle != null) {

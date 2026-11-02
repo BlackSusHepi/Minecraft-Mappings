@@ -56,9 +56,9 @@ public abstract class BlockEntityExtension extends BlockEntityAbstractMapping {
 	@Override
 	public void markDirty2() {
 		super.markDirty2();
-		final net.minecraft.block.BlockState blockState = getCachedState();
+		final net.minecraft.world.level.block.state.BlockState blockState = getCachedState();
 		if (world != null && !world.isClient && blockState != null) {
-			world.updateListeners(pos, blockState, blockState, net.minecraft.block.Block.NOTIFY_LISTENERS);
+			world.updateListeners(pos, blockState, blockState, net.minecraft.world.level.block.Block.NOTIFY_LISTENERS);
 		}
 	}
 

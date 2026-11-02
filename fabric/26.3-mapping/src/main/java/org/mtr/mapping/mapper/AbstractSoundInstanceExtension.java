@@ -32,12 +32,12 @@ public abstract class AbstractSoundInstanceExtension extends AbstractSoundInstan
 
 	@MappedMethod
 	protected AbstractSoundInstanceExtension(SoundEvent sound, SoundCategory category) {
-		super(sound, category, new Random(net.minecraft.util.math.random.Random.create()));
+		super(sound, category, new Random(net.minecraft.util.RandomSource.create()));
 	}
 
 	@MappedMethod
 	protected AbstractSoundInstanceExtension(Identifier soundId, SoundCategory category) {
-		super(soundId, category, new Random(net.minecraft.util.math.random.Random.create()));
+		super(soundId, category, new Random(net.minecraft.util.RandomSource.create()));
 	}
 
 	@MappedMethod

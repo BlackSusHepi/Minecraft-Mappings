@@ -90,19 +90,19 @@ public final class Registry extends DummyClass {
 
 	@MappedMethod
 	public <T extends BlockEntityExtension> BlockEntityTypeRegistryObject<T> registerBlockEntityType(Identifier identifier, BiFunction<BlockPos, BlockState, T> function, Supplier<Block>... blockSuppliers) {
-		final net.minecraft.block.entity.BlockEntityType<T> blockEntityType = FabricBlockEntityTypeBuilder.create((pos, state) -> function.apply(new BlockPos(pos), new BlockState(state)), HolderBase.convertArray(blockSuppliers, net.minecraft.block.Block[]::new)).build(null);
+		final net.minecraft.world.level.block.entity.BlockEntityType<T> blockEntityType = FabricBlockEntityTypeBuilder.create((pos, state) -> function.apply(new BlockPos(pos), new BlockState(state)), HolderBase.convertArray(blockSuppliers, net.minecraft.world.level.block.Block[]::new)).build(null);
 		objectsToRegister.add(() -> net.minecraft.registry.Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, identifier.data, blockEntityType));
 		return new BlockEntityTypeRegistryObject<>(new BlockEntityType<>(blockEntityType));
 	}
 
 	@MappedMethod
 	public <T extends EntityExtension> EntityTypeRegistryObject<T> registerEntityType(Identifier identifier, BiFunction<EntityType<?>, World, T> function, float width, float height) {
-		final net.minecraft.entity.EntityType<T> entityType = FabricEntityTypeBuilder.create(MobCategory.MISC, getEntityFactory(function)).dimensions(EntityDimensions.fixed(width, height)).build();
+		final net.minecraft.world.entity.EntityType<T> entityType = FabricEntityTypeBuilder.create(MobCategory.MISC, getEntityFactory(function)).dimensions(EntityDimensions.fixed(width, height)).build();
 		objectsToRegister.add(() -> net.minecraft.registry.Registry.register(BuiltInRegistries.ENTITY_TYPE, identifier.data, entityType));
 		return new EntityTypeRegistryObject<>(new EntityType<>(entityType));
 	}
 
-	private <T extends EntityExtension> net.minecraft.entity.EntityType.EntityFactory<T> getEntityFactory(BiFunction<EntityType<?>, World, T> function) {
+	private <T extends EntityExtension> net.minecraft.world.entity.EntityType.EntityFactory<T> getEntityFactory(BiFunction<EntityType<?>, World, T> function) {
 		return (entityType, world) -> function.apply(new EntityType<>(entityType), new World(world));
 	}
 
@@ -127,7 +127,7 @@ public final class Registry extends DummyClass {
 
 	@MappedMethod
 	public SoundEventRegistryObject registerSoundEvent(Identifier identifier) {
-		final net.minecraft.sound.SoundEvent soundEvent = net.minecraft.sound.SoundEvent.of(identifier.data);
+		final net.minecraft.sounds.SoundEvent soundEvent = net.minecraft.sounds.SoundEvent.of(identifier.data);
 		objectsToRegister.add(() -> net.minecraft.registry.Registry.register(BuiltInRegistries.SOUND_EVENT, identifier.data, soundEvent));
 		return new SoundEventRegistryObject(new SoundEvent(soundEvent));
 	}

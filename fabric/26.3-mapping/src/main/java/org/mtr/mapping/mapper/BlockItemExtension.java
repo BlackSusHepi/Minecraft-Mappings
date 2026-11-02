@@ -14,7 +14,7 @@ public class BlockItemExtension extends BlockItemAbstractMapping {
 
 	@Deprecated
 	@Override
-	public final InteractionResult<ItemStack> use(net.minecraft.world.World world, net.minecraft.entity.player.PlayerEntity user, net.minecraft.util.Hand hand) {
+	public final InteractionResult<ItemStack> use(net.minecraft.world.level.Level world, net.minecraft.world.entity.player.Player user, net.minecraft.world.InteractionHand hand) {
 		useWithoutResult(new World(world), new PlayerEntity(user), Hand.convert(hand));
 		return super.use(world, user, hand);
 	}

@@ -25,7 +25,7 @@ public final class GuiDrawing extends DummyClass {
 	@MappedMethod
 	public void beginDrawingRectangle() {
 		matrix = graphicsHolder.matrixStack == null ? null : graphicsHolder.matrixStack.peek().getPositionMatrix();
-		vertexConsumer = graphicsHolder.vertexConsumerProvider == null ? null : graphicsHolder.vertexConsumerProvider.getBuffer(net.minecraft.client.render.RenderLayer.getGui());
+		vertexConsumer = graphicsHolder.vertexConsumerProvider == null ? null : graphicsHolder.vertexConsumerProvider.getBuffer(net.minecraft.client.renderer.rendertype.RenderType.getGui());
 		drawContext = graphicsHolder.drawContext;
 	}
 

@@ -14,7 +14,7 @@ public final class ScoreboardHelper extends DummyClass {
 	@Nullable
 	@MappedMethod
 	public static ScoreboardObjective getScoreboardObjective(Scoreboard scoreboard, String name) {
-		final net.minecraft.scoreboard.ScoreboardObjective scoreboardObjective = scoreboard.data.getNullableObjective(name);
+		final net.minecraft.world.scores.Objective scoreboardObjective = scoreboard.data.getNullableObjective(name);
 		return scoreboardObjective == null ? null : new ScoreboardObjective(scoreboardObjective);
 	}
 

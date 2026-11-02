@@ -22,7 +22,7 @@ public class CheckboxWidgetExtension extends CheckboxWidgetAbstractMapping {
 
 	@MappedMethod
 	public CheckboxWidgetExtension(int x, int y, int width, int height, MutableText message, boolean showMessage, Consumer<Boolean> onPress) {
-		super(x, y, new Text((showMessage ? message.data : net.minecraft.text.Text.empty())), new TextRenderer(MinecraftClient.getInstance().data.textRenderer), false, Callback.EMPTY);
+		super(x, y, new Text((showMessage ? message.data : net.minecraft.network.chat.Component.empty())), new TextRenderer(MinecraftClient.getInstance().data.textRenderer), false, Callback.EMPTY);
 		this.width = width;
 		this.height = height;
 		this.onPress = onPress;

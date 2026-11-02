@@ -111,7 +111,7 @@ public final class CommandBuilder<T extends ArgumentBuilder<CommandSourceStack, 
 		@MappedMethod
 		@Nullable
 		public ServerPlayerEntity getServerPlayer() {
-			final net.minecraft.server.network.ServerPlayerEntity serverPlayerEntity = context.getSource().getPlayer();
+			final net.minecraft.server.level.ServerPlayer serverPlayerEntity = context.getSource().getPlayer();
 			return serverPlayerEntity == null ? null : new ServerPlayerEntity(serverPlayerEntity);
 		}
 	}

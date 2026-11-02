@@ -23,7 +23,7 @@ public interface BlockHelper extends DummyInterface {
 	}
 
 	@Deprecated
-	default void appendPropertiesHelper(StateDefinition.Builder<Block, net.minecraft.block.BlockState> builder) {
+	default void appendPropertiesHelper(StateDefinition.Builder<Block, net.minecraft.world.level.block.state.BlockState> builder) {
 		final List<HolderBase<?>> properties = new ArrayList<>();
 		addBlockProperties(properties);
 

@@ -19,13 +19,13 @@ public class FenceBlockExtension extends FenceBlockAbstractMapping implements Bl
 
 	@Deprecated
 	@Override
-	protected final void appendProperties(StateDefinition.Builder<Block, net.minecraft.block.BlockState> builder) {
+	protected final void appendProperties(StateDefinition.Builder<Block, net.minecraft.world.level.block.state.BlockState> builder) {
 		appendPropertiesHelper(builder);
 	}
 
 	@Deprecated
 	@Override
-	public final void appendTooltip(net.minecraft.item.ItemStack stack, @Nullable net.minecraft.world.BlockView world, List<Component> tooltip, net.minecraft.client.item.TooltipContext options) {
+	public final void appendTooltip(net.minecraft.world.item.ItemStack stack, @Nullable net.minecraft.world.level.BlockGetter world, List<Component> tooltip, net.minecraft.world.item.Item.TooltipContext options) {
 		appendTooltipHelper(new ItemStack(stack), world == null ? null : new BlockView(world), tooltip, new TooltipContext(options));
 	}
 

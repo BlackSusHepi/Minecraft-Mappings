@@ -62,12 +62,12 @@ public final class RegistryClient extends DummyClass {
 
 	@MappedMethod
 	public KeyBinding registerKeyBinding(String translationKey, int key, String categoryKey) {
-		return new KeyBinding(KeyBindingHelper.registerKeyBinding(new net.minecraft.client.option.KeyBinding(translationKey, InputConstants.Type.KEYSYM, key, categoryKey)));
+		return new KeyBinding(KeyBindingHelper.registerKeyBinding(new net.minecraft.client.KeyMapping(translationKey, InputConstants.Type.KEYSYM, key, categoryKey)));
 	}
 
 	@MappedMethod
 	public void registerBlockColors(BlockColorProvider blockColorProvider, BlockRegistryObject... blocks) {
-		final net.minecraft.block.Block[] newBlocks = new net.minecraft.block.Block[blocks.length];
+		final net.minecraft.world.level.block.Block[] newBlocks = new net.minecraft.world.level.block.Block[blocks.length];
 		for (int i = 0; i < blocks.length; i++) {
 			newBlocks[i] = blocks[i].get().data;
 		}
@@ -76,7 +76,7 @@ public final class RegistryClient extends DummyClass {
 
 	@MappedMethod
 	public void registerItemColors(ItemColorProvider itemColorProvider, ItemRegistryObject... items) {
-		final net.minecraft.item.Item[] newItems = new net.minecraft.item.Item[items.length];
+		final net.minecraft.world.item.Item[] newItems = new net.minecraft.world.item.Item[items.length];
 		for (int i = 0; i < items.length; i++) {
 			newItems[i] = items[i].get().data;
 		}
