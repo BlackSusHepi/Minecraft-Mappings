@@ -19,16 +19,11 @@ public class SlabBlockExtension extends SlabBlockAbstractMapping implements Bloc
 
 	@Deprecated
 	@Override
-	protected final void appendProperties(StateDefinition.Builder<Block, net.minecraft.world.level.block.state.BlockState> builder) {
+	protected final void createBlockStateDefinition(StateDefinition.Builder<Block, net.minecraft.world.level.block.state.BlockState> builder) {
 		appendPropertiesHelper(builder);
 	}
 
-	@Deprecated
-	@Override
-	public final void appendTooltip(net.minecraft.world.item.ItemStack stack, @Nullable net.minecraft.world.level.BlockGetter world, List<Component> tooltip, net.minecraft.world.item.Item.TooltipContext options) {
-		appendTooltipHelper(new ItemStack(stack), world == null ? null : new BlockView(world), tooltip, new TooltipContext(options));
-	}
-
+	// TODO(26.3): Block#appendHoverText was removed; block tooltips need to go through the block's item.
 	@MappedMethod
 	@Override
 	public void addBlockProperties(List<HolderBase<?>> properties) {
@@ -38,6 +33,6 @@ public class SlabBlockExtension extends SlabBlockAbstractMapping implements Bloc
 
 	@MappedMethod
 	public static SlabType getType(BlockState state) {
-		return SlabType.convert(state.data.get(TYPE));
+		return SlabType.convert(state.data.getValue(TYPE));
 	}
 }

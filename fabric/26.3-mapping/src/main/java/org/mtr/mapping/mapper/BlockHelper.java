@@ -3,7 +3,6 @@ package org.mtr.mapping.mapper;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.network.chat.Component;
@@ -58,7 +57,7 @@ public interface BlockHelper extends DummyInterface {
 
 	@MappedMethod
 	static BlockSettings createBlockSettings(boolean blockPiston, boolean forceSolid) {
-		final BlockBehaviour.Properties settings = BlockBehaviour.Properties.of().pushReaction(blockPiston ? PushReaction.BLOCK : PushReaction.NORMAL);
+		final BlockBehaviour.Properties settings = BlockBehaviour.Properties.of().pushReaction(blockPiston ? PushReaction.IMMOVEABLE : PushReaction.PUSH_PULL);
 		return new BlockSettings(forceSolid ? settings.forceSolidOn() : settings);
 	}
 
@@ -71,7 +70,7 @@ public interface BlockHelper extends DummyInterface {
 	static VoxelShape shapeUnion(VoxelShape voxelShape, VoxelShape... voxelShapes) {
 		VoxelShape result = voxelShape;
 		for (final VoxelShape additionalShape : voxelShapes) {
-			result = Shapes.or(result, additionalShape);
+			result = VoxelShapes.union(result, additionalShape);
 		}
 		return result;
 	}
