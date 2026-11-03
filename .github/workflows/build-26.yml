@@ -58,6 +58,8 @@ jobs:
           mkdir /tmp/pub
           cp mc-api/classes.txt mc-api/jar-path.txt mc-api/javap-errors.txt  /tmp/pub/ || true
           gzip -c mc-api/signatures.txt > /tmp/pub/signatures.txt.gz || true
+          cp mc-api/fabric-api/classes.txt /tmp/pub/fabric-api-classes.txt || true
+          gzip -c mc-api/fabric-api/signatures.txt > /tmp/pub/fabric-api-signatures.txt.gz || true
           tar czf /tmp/pub/holders.tar.gz -C fabric/26.3-mapping/src/main/java/org/mtr/mapping holder || true
           tar czf /tmp/pub/existingMethods.tar.gz build/existingMethods build/libraryMethods || true
           cd /tmp/pub

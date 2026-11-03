@@ -15,3 +15,15 @@ wc -l "$OUT/classes.txt"
 grep -v '\$[0-9]' "$OUT/classes.txt" | xargs -n 400 javap -protected -cp "$JAR" > "$OUT/signatures.txt" 2>"$OUT/javap-errors.txt"
 wc -l "$OUT/signatures.txt"
 
+
+# Fabric API (public api packages only)
+FAPI="$OUT/fabric-api"; mkdir -p "$FAPI"
+find ~/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api -name '*.jar' ! -name '*sources*' ! -name '*javadoc*' 2>/dev/null | sort > "$FAPI/jars.txt"
+wc -l "$FAPI/jars.txt"
+: > "$FAPI/classes.txt"
+while read -r j; do unzip -Z1 "$j" 2>/dev/null | grep -E '^net/fabricmc/fabric/api/.*\.class$' | grep -v '\$[0-9]' | sed 's/\.class$//; s#/#.#g' >> "$FAPI/classes.txt"; done < "$FAPI/jars.txt"
+sort -u -o "$FAPI/classes.txt" "$FAPI/classes.txt"
+wc -l "$FAPI/classes.txt"
+CP="$(paste -sd: "$FAPI/jars.txt"):$JAR:$(find ~/.gradle/caches/modules-2/files-2.1 \( -path '*com.mojang*' -o -path '*org.joml*' -o -path '*it.unimi*' -o -path '*com.google.guava*' -o -path '*org.slf4j*' -o -path '*net.fabricmc/fabric-loader*' \) -name '*.jar' ! -name '*sources*' 2>/dev/null | paste -sd:)"
+grep -v 'package-info' "$FAPI/classes.txt" | xargs -n 300 javap -protected -cp "$CP" > "$FAPI/signatures.txt" 2>"$FAPI/javap-errors.txt"
+wc -l "$FAPI/signatures.txt"
